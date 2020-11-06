@@ -1,11 +1,14 @@
 package cn.codewoo.controller;
 
+import cn.codewoo.entity.Video;
 import cn.codewoo.service.IVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @ClassName controller
@@ -21,7 +24,9 @@ public class VideoController {
     private IVideoService videoService;
 
     @GetMapping("/select_video")
-    public Object selectVideoById(int videoId){
-        return videoService.selectVideoById(videoId);
+    public Object selectVideoById(HttpServletRequest request, int videoId){
+        Video video = videoService.selectVideoById(videoId);
+        video.setServerInfo(request.getServerName() + ":" + request.getServerPort());
+        return video;
     }
 }
